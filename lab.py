@@ -3,11 +3,19 @@
 # Import scapy library
 from scapy.all import *
 
-# TASK 1.1B
-QUESTION = 2
+QUESTION = 3
 
 def summarize(pkt):
    return pkt.summary()
+
+def ping(spoof_ip, dst_ip):
+   # Create an IP Object
+   header = IP(src = spoof_ip, dst = dst_ip)
+   # Mount the ICMP data onto p
+   pkt = header/ICMP()
+   # Vertify the contents of the packet
+   header.show()
+   send(pkt)
 
 match QUESTION:
    case 0:
@@ -22,6 +30,8 @@ match QUESTION:
       sniff(filter=f"tcp and src {SRC} and dst port {PORT}", prn = lambda x : x.summary())
 
    case 2:
-      SUBNET:str = "192.168.1"
+      SUBNET:str = "SUBNET"
       print(f'Capturing packets from / for subnet {SUBNET}')
       sniff(filter=f"net {SUBNET}", prn = lambda x : x.summary())
+   case 3: 
+      ping("SRC", "DST")
